@@ -27,10 +27,9 @@ public class Todolist extends Auditable {
 
     public Todolist() {}
 
-    public Todolist(String title, User user, List<Item> items) {
+    public Todolist( User user, String title) {
         this.title = title;
         this.user = user;
-        this.items = items;
     }
 
     public long getTodoid() {

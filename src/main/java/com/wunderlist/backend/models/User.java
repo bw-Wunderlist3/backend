@@ -34,13 +34,13 @@ public class User extends Auditable {
 
     public User() {}
 
-    public User(String username, String password, String email, String firstname, String lastname, List<Todolist> todolists) {
+    public User(String username, String password, String email, String firstname, String lastname) {
         this.username = username;
         this.password = password;
         this.email = email;
         this.firstname = firstname;
         this.lastname = lastname;
-        this.todolists = todolists;
+
     }
 
     public long getUserid() {
