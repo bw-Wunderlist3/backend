@@ -38,6 +38,38 @@ public class SeedData implements CommandLineRunner {
     @Transactional
     @Override
     public void run(String[] args) throws Exception {
+
+
+
+/*        User u1 = new User("admin","password" , "lambda@gmail.com", "Java" , "Backend");
+          u1.getTodolists();
+              userService.save(u1);
+
+        User u2 = new User("pasta", "penne", "pastalove@gmail.com", "Mr.Pasta", "Lasagna");
+         u2.getTodolists();
+                 userService.save(u2);
+
+        User u3 = new User("futureKid", "IwillbePresident", "futureme@gmail.com", "President", "Cabage");
+        u2.getTodolists()
+                .add(new Todolist(u3,"Future Goals"));
+        userService.save(u3);
+
+        User u4 = new User("reptile", "snakey", "scales@gmail.com", "Python", "Constrictor");
+        u2.getTodolists()
+                .add(new Todolist(u2,"Reptile Expo"));
+        userService.save(u4);
+
+        Todolist t1 = new Todolist(u1,"Finish WonderList");
+          t1.getItems()
+               .add(new Item("step1", "github",  1995-12-31,"once",  1,t1, ));
+        Todolist t2 = new Todolist(u2,"The Pasta Festival" );*/
+
+
+
+
+
+
+
         /*
         Users Table
         long userid
@@ -125,43 +157,6 @@ public class SeedData implements CommandLineRunner {
         userService.save(u2);
         userService.save(u3);
         userService.save(u4);
-
-
-
-
-
-
-        /*
-        u1.getTodolists();
-        userService.save(u1);
-        u2.getTodolists();
-        userService.save(u2);
-        u3.getTodolists();
-        userService.save(u3);
-        u4.getTodolists();
-        userService.save(u4);
-        t1.getItems()
-                .add(i1);
-        t2.getItems()
-                .add(i2);
-        t3.getItems()
-                .add(i3);
-        t4.getItems()
-                .add(i4);
-        Set<Itemstate> items = new HashSet<>();
-        items.add(new Itemstate(i1,s1 ));
-        s1.setItems(items);
-        // s1 = stateService.save(s1);
-        items =new HashSet<>();
-        items.add(new Itemstate(i2,s2));
-        s2.setItems(items);
-        items = new HashSet<>();
-        items.add(new Itemstate(i3,s3));
-        s3.setItems(items);
-        items =new HashSet<>();
-        items.add(new Itemstate(i4,s1));
-        s1.setItems(items);
-        */
 
     }
 }
