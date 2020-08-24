@@ -27,11 +27,7 @@ public class Todolist extends Auditable {
 
     public Todolist() {}
 
-<<<<<<< HEAD
-    public Todolist( User user, String title) {
-=======
     public Todolist(User user, String title) {
->>>>>>> 46cb893f8acec4b620e7276c34588e4097f7bf88
         this.title = title;
         this.user = user;
     }

@@ -41,10 +41,6 @@ public class User extends Auditable {
         this.email = email;
         this.firstname = firstname;
         this.lastname = lastname;
-<<<<<<< HEAD
-
-=======
->>>>>>> 46cb893f8acec4b620e7276c34588e4097f7bf88
     }
 
     public long getUserid() {

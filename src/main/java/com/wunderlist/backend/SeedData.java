@@ -1,15 +1,8 @@
 package com.wunderlist.backend;
 
-<<<<<<< HEAD
-import com.wunderlist.backend.models.Item;
-import com.wunderlist.backend.models.Todolist;
-import com.wunderlist.backend.models.User;
-import com.wunderlist.backend.services.ItemService;
-=======
 import com.wunderlist.backend.models.*;
 import com.wunderlist.backend.services.ItemService;
 import com.wunderlist.backend.services.StateService;
->>>>>>> 46cb893f8acec4b620e7276c34588e4097f7bf88
 import com.wunderlist.backend.services.TodolistService;
 import com.wunderlist.backend.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,35 +11,23 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
-<<<<<<< HEAD
-import java.util.List;
-=======
 import java.util.HashSet;
 import java.util.Set;
->>>>>>> 46cb893f8acec4b620e7276c34588e4097f7bf88
 
 @Transactional
 @Component
 public class SeedData implements CommandLineRunner {
-<<<<<<< HEAD
-=======
     /*****************************
      * Created by Elisa Alvarez  *
      * Java Backend              *
      * Aug 23, 2020              *
      *****************************/
->>>>>>> 46cb893f8acec4b620e7276c34588e4097f7bf88
 
     @Autowired
     UserService userService;
 
     @Autowired
     TodolistService todolistService;
-<<<<<<< HEAD
-    @Autowired
-    ItemService itemService;
-
-=======
 
     @Autowired
     ItemService itemService;
@@ -54,14 +35,13 @@ public class SeedData implements CommandLineRunner {
     @Autowired
     StateService stateService;
 
->>>>>>> 46cb893f8acec4b620e7276c34588e4097f7bf88
     @Transactional
     @Override
     public void run(String[] args) throws Exception {
 
 
 
-        User u1 = new User("admin","password" , "lambda@gmail.com", "Java" , "Backend");
+/*        User u1 = new User("admin","password" , "lambda@gmail.com", "Java" , "Backend");
           u1.getTodolists();
               userService.save(u1);
 
@@ -82,7 +62,7 @@ public class SeedData implements CommandLineRunner {
         Todolist t1 = new Todolist(u1,"Finish WonderList");
           t1.getItems()
                .add(new Item("step1", "github",  1995-12-31,"once",  1,t1, ));
-        Todolist t2 = new Todolist(u2,"The Pasta Festival" );
+        Todolist t2 = new Todolist(u2,"The Pasta Festival" );*/
 
 
 
@@ -177,43 +157,6 @@ public class SeedData implements CommandLineRunner {
         userService.save(u2);
         userService.save(u3);
         userService.save(u4);
-
-
-
-
-
-
-        /*
-        u1.getTodolists();
-        userService.save(u1);
-        u2.getTodolists();
-        userService.save(u2);
-        u3.getTodolists();
-        userService.save(u3);
-        u4.getTodolists();
-        userService.save(u4);
-        t1.getItems()
-                .add(i1);
-        t2.getItems()
-                .add(i2);
-        t3.getItems()
-                .add(i3);
-        t4.getItems()
-                .add(i4);
-        Set<Itemstate> items = new HashSet<>();
-        items.add(new Itemstate(i1,s1 ));
-        s1.setItems(items);
-        // s1 = stateService.save(s1);
-        items =new HashSet<>();
-        items.add(new Itemstate(i2,s2));
-        s2.setItems(items);
-        items = new HashSet<>();
-        items.add(new Itemstate(i3,s3));
-        s3.setItems(items);
-        items =new HashSet<>();
-        items.add(new Itemstate(i4,s1));
-        s1.setItems(items);
-        */
 
     }
 }
