@@ -14,4 +14,6 @@ public interface TodolistService {
     Todolist updateList(long todoid, String title);
 
     void deleteList(long todoid);
+
+    Todolist saveInitial(Todolist todo);
 }

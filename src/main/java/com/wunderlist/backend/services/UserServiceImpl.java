@@ -1,6 +1,10 @@
 package com.wunderlist.backend.services;
 
+import com.wunderlist.backend.exceptions.ResourceNotFoundException;
+import com.wunderlist.backend.models.Item;
+import com.wunderlist.backend.models.Todolist;
 import com.wunderlist.backend.models.User;
+import com.wunderlist.backend.repository.TodolistRepository;
 import com.wunderlist.backend.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,6 +17,12 @@ import javax.persistence.EntityNotFoundException;
 public class UserServiceImpl implements UserService {
     @Autowired
     private UserRepository userrepos;
+
+    @Autowired
+    private TodolistRepository todorepos;
+
+    @Autowired
+    private TodolistService todolistService;
 
     @Override
     public User findUserById(long userid) {
@@ -37,12 +47,50 @@ public class UserServiceImpl implements UserService {
         newUser.setFirstname(user.getFirstname());
         newUser.setLastname(user.getLastname());
 
-        /*
-        There would be a function here to check a UserRoles jointable to get the correct or default Role for this
-        new user, but everyone is getting the same role for this project, and it's already been hard-coded in
-        the Users model, so we're skipping:
-        for(UserRoles ur : user.getRoles()) {}
-        */
+        newUser.getTodolists().clear();
+        for(Todolist passedTodo : user.getTodolists()) {
+            Todolist newTd = new Todolist();
+            newTd.setUser(newUser);
+            newTd.setTitle(passedTodo.getTitle());
+
+            newTd.getItems().clear();
+            for(Item i : passedTodo.getItems()) {
+                Item createdItem = new Item();
+
+                createdItem.setName(i.getName());
+                createdItem.setDescription(i.getDescription());
+                createdItem.setDuedate(i.getDuedate());
+                createdItem.setFrequency(i.getFrequency());
+                createdItem.setTodolist(newTd);
+
+                newTd.getItems().add(createdItem);
+            }
+
+            newUser.getTodolists().add(newTd);
+
+            System.out.println("Todo Title: " + passedTodo.getTitle());
+            System.out.println("Todo's Items: " + passedTodo.getItems().size());
+            System.out.println("Todo's User: " + newUser.getUsername());
+
+            /*
+            Todolist newTodo = new Todolist();
+
+            if(passedTodo.getTodoid() != 0) {
+                todorepos.findById(passedTodo.getTodoid())
+                        .orElseThrow(() -> new ResourceNotFoundException("Grrrr!"));
+                newTodo.setTodoid(passedTodo.getTodoid());
+            }
+
+            newTodo.setTitle(passedTodo.getTitle());
+            newTodo.setUser(passedTodo.getUser());
+
+            newTodo.getItems().clear();
+            for(Item i : passedTodo.getItems()) {
+                newTodo.getItems().add(new Item(i.getName(), i.getDescription(), i.getDuedate(), i.getFrequency(), newTodo));
+            }
+            */
+        }
+
 
         return userrepos.save(newUser);
     }
