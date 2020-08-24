@@ -1,6 +1,7 @@
 package com.wunderlist.backend.services;
 
 import com.wunderlist.backend.models.Todolist;
+import com.wunderlist.backend.models.User;
 import com.wunderlist.backend.repository.TodolistRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,6 +17,9 @@ public class TodolistServiceImpl implements TodolistService {
     @Autowired
     private TodolistRepository todorepos;
 
+    @Autowired
+    private UserService userService;
+
     @Override
     public List<Todolist> findAllLists() {
         List<Todolist> list = new ArrayList<>();
@@ -30,13 +34,23 @@ public class TodolistServiceImpl implements TodolistService {
                 .orElseThrow(() -> new EntityNotFoundException("Todo List id: " + todoid + " was not found.")); // Change to ResourceNotFoundException
     }
 
-    //fixme
     @Transactional
     @Override
-    public Todolist saveList(Todolist todo) {
-        Todolist newlist = new Todolist();
+    public Todolist saveList(long userid, String title) {
+        User currentUser = userService.findUserById(userid);
+        Todolist newlist = new Todolist(currentUser, title);
 
-        return null;
+        return todorepos.save(newlist);
+    }
+
+    @Transactional
+    @Override
+    public Todolist updateList(long todoid, String title) {
+        if(todorepos.findById(todoid).isPresent()) {
+            Todolist currentList = findListById(todoid);
+            currentList.setTitle(title);
+            return todorepos.save(currentList);
+        } else throw new EntityNotFoundException("Todo List with id: " + todoid + " was not found."); // Change to ResponseNotFoundException later
     }
 
     @Transactional

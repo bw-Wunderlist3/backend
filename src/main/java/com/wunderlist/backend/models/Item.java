@@ -26,6 +26,10 @@ public class Item extends Auditable {
     private String frequency;
 
     // Always defaults to whichever integer represents Pending
+    // So as I'm building out the repositories and services, I'm noticing the boolean and int below are not needed for this project
+    // But if feels like too much work to remove them from this entire project...
+    @Transient
+    public boolean hasvalueforstatus = false;
     private int status;
 
     @ManyToOne
@@ -39,14 +43,21 @@ public class Item extends Auditable {
 
     public Item() {}
 
-    public Item(String name, String description, Date duedate, String frequency, int status, Todolist todolist, Set<Itemstate> states) {
+    public Item(String name, String description, Date duedate, String frequency) {
         this.name = name;
         this.description = description;
         this.duedate = duedate;
         this.frequency = frequency;
-        this.status = status;
+    }
+
+    // Ughhh... removing int status from entire project
+    public Item(String name, String description, Date duedate, String frequency, Todolist todolist) {
+        this.name = name;
+        this.description = description;
+        this.duedate = duedate;
+        this.frequency = frequency;
+        //this.status = status;
         this.todolist = todolist;
-        this.states = states;
     }
 
     public long getItemid() {
@@ -94,6 +105,7 @@ public class Item extends Auditable {
     }
 
     public void setStatus(int status) {
+        hasvalueforstatus = true;
         this.status = status;
     }
 

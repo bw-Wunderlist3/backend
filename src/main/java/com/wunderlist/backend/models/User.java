@@ -3,6 +3,7 @@ package com.wunderlist.backend.models;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -40,7 +41,10 @@ public class User extends Auditable {
         this.email = email;
         this.firstname = firstname;
         this.lastname = lastname;
+<<<<<<< HEAD
 
+=======
+>>>>>>> 46cb893f8acec4b620e7276c34588e4097f7bf88
     }
 
     public long getUserid() {
@@ -64,6 +68,11 @@ public class User extends Auditable {
     }
 
     public void setPassword(String password) {
+        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+        this.password = passwordEncoder.encode(password);
+    }
+
+    public void setPasswordNoEncrypt(String password) {
         this.password = password;
     }
 
@@ -105,6 +114,11 @@ public class User extends Auditable {
 
         // There was a for-loop in the Sprint challenge to add myRole to rtnList, but since all accounts will be of role: User,
         // Is there a simpler way of doing that to authenticate accounts
+
+        // Going to hard-code the role for all accounts here. Thus, no for-loop is necessary
+        String myRole = "ROLE_ADMIN";
+        rtnList.add(new SimpleGrantedAuthority(myRole));
+
         return rtnList;
     }
 }

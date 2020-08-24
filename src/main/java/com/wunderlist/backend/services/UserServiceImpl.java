@@ -20,20 +20,31 @@ public class UserServiceImpl implements UserService {
                 .orElseThrow(() -> new EntityNotFoundException("User id: " + userid + " was not found.")); // Change to ResourceNotFoundException
     }
 
-    //fixme
     @Transactional
     @Override
     public User save(User user) {
         User newUser = new User();
 
+        if(user.getUserid() != 0) {
+            userrepos.findById(user.getUserid())
+                    .orElseThrow(() -> new EntityNotFoundException("User id: " + user.getUserid() + " was not found.")); // Change to ResourceNotFoundException
+            newUser.setUserid(user.getUserid());
+        }
+
+        newUser.setUsername(user.getUsername().toLowerCase());
+        newUser.setPasswordNoEncrypt(user.getPassword());
+        newUser.setEmail(user.getEmail().toLowerCase());
+        newUser.setFirstname(user.getFirstname());
+        newUser.setLastname(user.getLastname());
+
         /*
-        Sprint challenge shows user repository and roles service used here to create the new user and
-        assign a default role (for authentication purposes) to the new user. All accounts here will have the same
-        role: User. There seems to be no need to create a table to hold one item of data to then join it to the
-        Users Table. Still trying to brainstorm a different way to handle this.
+        There would be a function here to check a UserRoles jointable to get the correct or default Role for this
+        new user, but everyone is getting the same role for this project, and it's already been hard-coded in
+        the Users model, so we're skipping:
+        for(UserRoles ur : user.getRoles()) {}
         */
 
-        return null; // This needs to change to "return userrepos.save(newUser)" once I figure out how I want to handle authentication roles
+        return userrepos.save(newUser);
     }
 
     @Transactional
@@ -42,9 +53,16 @@ public class UserServiceImpl implements UserService {
         User currentUser = userrepos.findById(userid)
                 .orElseThrow(() -> new EntityNotFoundException("User id: " + userid + " was not found.")); // Change exception to ResourceNotFoundException later
 
-        // Again, the Sprint Challenge method involved roleService to add roles for authentication purposes here.
+        if(user.getUsername() != null) currentUser.setUsername(user.getUsername().toLowerCase());
+        if(user.getPassword() != null) currentUser.setPasswordNoEncrypt(user.getPassword());
+        if(user.getEmail() != null) currentUser.setEmail(user.getEmail().toLowerCase());
+        if(user.getFirstname() != null) currentUser.setFirstname(user.getFirstname());
+        if(user.getLastname() != null) currentUser.setLastname(user.getLastname());
 
-        return null; // This needs to change to "return userrepos.save(newUser)" once I figure out how I want to handle authentication roles
+        // Again, the Sprint Challenge method involved roleService to add roles for authentication purposes here.
+        // But now I have everyone's default Role hard-coded in the Users model, so skipping this part here.
+
+        return userrepos.save(currentUser);
     }
 
     @Transactional

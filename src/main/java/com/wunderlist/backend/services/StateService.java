@@ -8,4 +8,6 @@ public interface StateService {
     List<State> findAllStatuses();
 
     State findStatusById(long statusid);
+
+    State save(State state);
 }
