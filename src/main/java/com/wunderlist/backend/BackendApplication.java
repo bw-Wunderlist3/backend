@@ -22,6 +22,7 @@ public class BackendApplication {
         // I will uncomment block comment below later and comment out stand-alone SpringApplication line
         // For now, leaving as-is, so I can test results using localhost:5280
         // Also note that in the pursuit of uniqueness, I named the System Environment Variables: WUNDERID & WUNDERSECRET
+
         /*
         checkEnvironmentVariable("WUNDERID");
         checkEnvironmentVariable("WUNDERSECRET");

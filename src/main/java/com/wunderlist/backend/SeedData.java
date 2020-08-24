@@ -90,7 +90,6 @@ public class SeedData implements CommandLineRunner {
         String description
         String duedate
         String frequency (I thought about int, but changed my mind)
-        int status
         long (foreign) todoid
 
         Status table
@@ -105,8 +104,8 @@ public class SeedData implements CommandLineRunner {
         and last_modified_date (or whatever stylization/casing desired)
         */
 
-        State s1 = new State("Not Complete");
-        State s2 = new State("In Progress");
+        State s1 = new State("Pending");
+        State s2 = new State("Canceled");
         State s3 = new State("Complete");
 
         User u1 = new User("admin","password" , "lambda@gmail.com", "Java" , "Backend");
@@ -128,30 +127,34 @@ public class SeedData implements CommandLineRunner {
         s2 = stateService.save(s2);
         s3 = stateService.save(s3);
 
-        i1.getStates().add(new Itemstate(i1, s2)); // Set default state for item 1 to "In progress"
-        i2.getStates().add(new Itemstate(i2, s2)); // Set default state for item 2 to "In progress"
-        i3.getStates().add(new Itemstate(i3, s2)); // Set default state for item 3 to "In progress"
-        i4.getStates().add(new Itemstate(i4, s2)); // Set default state for item 4 to "In progress"
+        i1.getStates().add(new Itemstate(i1, s1)); // Set default state for item 1 to "In progress"
+        i2.getStates().add(new Itemstate(i2, s1)); // Set default state for item 2 to "In progress"
+        i3.getStates().add(new Itemstate(i3, s1)); // Set default state for item 3 to "In progress"
+        i4.getStates().add(new Itemstate(i4, s1)); // Set default state for item 4 to "In progress"
 
         t1.getItems().add(i1);
         t2.getItems().add(i2);
         t3.getItems().add(i3);
         t4.getItems().add(i4);
 
+        /*
         itemService.saveItem(t1.getTodoid(), i1); // I may be overthinking this, so this line may/may not need to be commented out
         itemService.saveItem(t2.getTodoid(), i2); // I may be overthinking this, so this line may/may not need to be commented out
         itemService.saveItem(t3.getTodoid(), i3); // I may be overthinking this, so this line may/may not need to be commented out
         itemService.saveItem(t4.getTodoid(), i4); // I may be overthinking this, so this line may/may not need to be commented out
+        */
 
         u1.getTodolists().add(t1);
         u2.getTodolists().add(t2);
         u2.getTodolists().add(t3);
         u2.getTodolists().add(t4);
 
+        /*
         todolistService.saveList(u1.getUserid(), t1.getTitle()); // I may be overthinking this, so this line may/may not need to be commented out
         todolistService.saveList(u2.getUserid(), t2.getTitle()); // I may be overthinking this, so this line may/may not need to be commented out
         todolistService.saveList(u2.getUserid(), t3.getTitle()); // I may be overthinking this, so this line may/may not need to be commented out
         todolistService.saveList(u2.getUserid(), t4.getTitle()); // I may be overthinking this, so this line may/may not need to be commented out
+        */
 
         userService.save(u1);
         userService.save(u2);
