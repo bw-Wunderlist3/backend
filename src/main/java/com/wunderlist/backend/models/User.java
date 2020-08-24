@@ -37,7 +37,7 @@ public class User extends Auditable {
 
     public User(String username, String password, String email, String firstname, String lastname) {
         this.username = username;
-        this.password = password;
+        setPassword(password);
         this.email = email;
         this.firstname = firstname;
         this.lastname = lastname;
