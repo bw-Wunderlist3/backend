@@ -29,4 +29,12 @@ public class StateServiceImpl implements StateService {
         return statrepos.findById(statusid)
                 .orElseThrow(() -> new EntityNotFoundException("Status id: " + statusid + " was not found.")); // Change to ResponseNotFoundException later
     }
+
+    @Transactional
+    @Override
+    public State save(State state) {
+        if(state.getItems().size() > 0) throw new EntityNotFoundException("Item states are not updated through State.");
+
+        return statrepos.save(state);
+    }
 }

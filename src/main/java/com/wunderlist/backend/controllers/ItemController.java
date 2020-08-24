@@ -44,12 +44,12 @@ public class ItemController {
 
     /*
     Create a new Item
-    Route: http://localhost:5280/items
+    Route: http://localhost:5280/items/t/:todoid
     */
-    @PostMapping(value = "", consumes = "application/json")
-    public ResponseEntity<?> createItem(@Valid @RequestBody Item newitem) throws URISyntaxException {
-        newitem.setItemid(0);
-        newitem = itemService.saveItem(newitem);
+    @PostMapping(value = "/t/{todoid}", consumes = "applciation/json")
+    public ResponseEntity<?> createItem(@PathVariable long todoid, @Valid @RequestBody Item newitem) throws URISyntaxException {
+        //Note: the newitem object in the parameter should only have 4 fields: name, description, duedate, frequency
+        newitem = itemService.saveItem(todoid, newitem);
 
         HttpHeaders responseHeaders = new HttpHeaders();
         URI newItemURI = ServletUriComponentsBuilder.fromCurrentRequest()
@@ -65,10 +65,12 @@ public class ItemController {
     Replace an entire Item
     Route: http://localhost:5280/items/:itemid
     */
+    // Also needing to change this similar to the way I changed PostMapping above
     @PutMapping(value = "/{itemid}", consumes = "application/json")
     public ResponseEntity<?> updateFullItem(@Valid @RequestBody Item updateitem, @PathVariable long itemid) {
+        // Unlike the Post Mapping, this updaeitem object needs 6 fields: name, description, duedate, frequency, status, todolist(obj)
         updateitem.setItemid(itemid);
-        itemService.saveItem(updateitem);
+        itemService.changeItem(updateitem);
 
         return new ResponseEntity<>(HttpStatus.OK);
     }

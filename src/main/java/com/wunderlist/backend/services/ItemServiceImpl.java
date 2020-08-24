@@ -1,6 +1,7 @@
 package com.wunderlist.backend.services;
 
 import com.wunderlist.backend.models.Item;
+import com.wunderlist.backend.models.Todolist;
 import com.wunderlist.backend.repository.ItemRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,6 +17,9 @@ public class ItemServiceImpl implements ItemService {
     @Autowired
     private ItemRepository itemrepos;
 
+    @Autowired
+    private TodolistService todolistService;
+
     @Override
     public List<Item> findAllItems() {
         List<Item> list = new ArrayList<>();
@@ -30,13 +34,42 @@ public class ItemServiceImpl implements ItemService {
                 .orElseThrow(() -> new EntityNotFoundException("Item id: " + itemid + " was not found.")); // Change to ResponseNotFoundException
     }
 
-    //fixme
     @Transactional
     @Override
-    public Item saveItem(Item item) {
-        Item newItem = new Item();
+    public Item saveItem(long todoid, Item item) {
+        // The item object in the parameter above should be the one containing 4 fields instead of x6x, 5 (removed int status)
 
-        return null;
+        Todolist currentTodo = todolistService.findListById(todoid);
+        Item newItem = new Item(item.getName(), item.getDescription(), item.getDuedate(), item.getFrequency(), currentTodo);
+
+        /*
+        Requested Object shape:
+            {
+                "name": "required string",
+                "description": "optional string",
+                "duedate": dateValue,
+                "frequency": "optional string",
+            }
+        */
+
+        return itemrepos.save(newItem);
+    }
+
+    @Transactional
+    @Override
+    public Item changeItem(Item item) {
+        // Note: unlike the saveItem method above, this item object needs x6x, 5 fields instead of 4:
+        // name, description, duedate, frequency, -status-, todolist(obj)
+        Item currentItem = new Item();
+
+        currentItem.setName(item.getName());
+        currentItem.setDescription(item.getDescription());
+        currentItem.setDuedate(item.getDuedate());
+        currentItem.setFrequency(item.getFrequency());
+        //currentItem.setStatus(item.getStatus());
+        currentItem.setTodolist(todolistService.findListById(item.getTodolist().getTodoid()));
+
+        return itemrepos.save(currentItem);
     }
 
     @Transactional
@@ -49,7 +82,7 @@ public class ItemServiceImpl implements ItemService {
         if(item.getDescription() != null) currentItem.setDescription(item.getDescription());
         if(item.getDuedate() != null) currentItem.setDuedate(item.getDuedate());
         if(item.getFrequency() != null) currentItem.setFrequency(item.getFrequency());
-        if(item.getStatus() != 0) currentItem.setStatus(item.getStatus());
+        //if(item.getStatus() != 0) currentItem.setStatus(item.getStatus());
 
         return itemrepos.save(currentItem);
     }

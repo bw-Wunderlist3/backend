@@ -22,9 +22,8 @@ public class State extends Auditable {
 
     public State() {}
 
-    public State(String type, Set<Itemstate> items) {
+    public State(String type) {
         this.type = type;
-        this.items = items;
     }
 
     public long getStatusid() {

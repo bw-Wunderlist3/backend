@@ -44,12 +44,11 @@ public class TodolistController {
 
     /*
     Create a new Todolist
-    http://localhost:5280/todos
+    http://localhost:5280/todos/u/:userid/t/:title
     */
-    @PostMapping(value = "", consumes = "application/json")
-    public ResponseEntity<?> createTodo(@Valid @RequestBody Todolist newtodo) throws URISyntaxException {
-        newtodo.setTodoid(0);
-        newtodo = todolistService.saveList(newtodo);
+    @PostMapping(value = "/u/{userid}/t/{title}", consumes = "application/json")
+    public ResponseEntity<?> createTodo(@PathVariable long userid, @PathVariable String title) throws URISyntaxException {
+        Todolist newtodo = todolistService.saveList(userid, title);
 
         HttpHeaders responseHeaders = new HttpHeaders();
         URI newTodoURI = ServletUriComponentsBuilder.fromCurrentRequest()
@@ -63,12 +62,11 @@ public class TodolistController {
 
     /*
     Edit a Todolist (essentially, it's title) by ID
-    http://localhost:5280/todos/:todoid
+    http://localhost:5280/todos/:todoid/title/:title
     */
-    @PutMapping(value = "/{todoid}", consumes = "application/json")
-    public ResponseEntity<?> updateTodo(@Valid @RequestBody Todolist updatetodo, @PathVariable long todoid) {
-        updatetodo.setTodoid(todoid);
-        todolistService.saveList(updatetodo);
+    @PutMapping(value = "/{todoid}/title/{title}", consumes = "application/json")
+    public ResponseEntity<?> updateTodo(@PathVariable long todoid, @PathVariable String title) {
+        todolistService.updateList(todoid, title);
 
         return new ResponseEntity<>(HttpStatus.OK);
     }
