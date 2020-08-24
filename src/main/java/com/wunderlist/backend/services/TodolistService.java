@@ -9,7 +9,9 @@ public interface TodolistService {
 
     Todolist findListById(long todoid);
 
-    Todolist saveList(Todolist todo);
+    Todolist saveList(long userid, String title);
+
+    Todolist updateList(long todoid, String title);
 
     void deleteList(long todoid);
 }

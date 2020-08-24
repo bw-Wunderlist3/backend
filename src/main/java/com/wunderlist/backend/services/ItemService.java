@@ -9,7 +9,9 @@ public interface ItemService {
 
     Item findItemById(long itemid);
 
-    Item saveItem(Item item);
+    Item saveItem(long todoid, Item item);
+
+    Item changeItem(Item item);
 
     Item updateItem(Item item, long itemid);
 
