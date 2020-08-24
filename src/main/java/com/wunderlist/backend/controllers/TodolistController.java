@@ -62,9 +62,9 @@ public class TodolistController {
 
     /*
     Edit a Todolist (essentially, it's title) by ID
-    http://localhost:5280/todos/:todoid/title/:title
+    http://localhost:5280/todos/:todoid/t/:title
     */
-    @PutMapping(value = "/{todoid}/title/{title}", consumes = "application/json")
+    @PutMapping(value = "/{todoid}/t/{title}", consumes = "application/json")
     public ResponseEntity<?> updateTodo(@PathVariable long todoid, @PathVariable String title) {
         todolistService.updateList(todoid, title);
 

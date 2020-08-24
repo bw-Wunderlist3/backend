@@ -1,5 +1,7 @@
 package com.wunderlist.backend.services;
 
+import com.wunderlist.backend.exceptions.ResourceNotFoundException;
+import com.wunderlist.backend.models.Item;
 import com.wunderlist.backend.models.Todolist;
 import com.wunderlist.backend.models.User;
 import com.wunderlist.backend.repository.TodolistRepository;
@@ -37,10 +39,20 @@ public class TodolistServiceImpl implements TodolistService {
     @Transactional
     @Override
     public Todolist saveList(long userid, String title) {
-        User currentUser = userService.findUserById(userid);
-        Todolist newlist = new Todolist(currentUser, title);
+        Todolist createdTodo = new Todolist();
 
-        return todorepos.save(newlist);
+        if(createdTodo.getTodoid() != 0) {
+            todorepos.findById(createdTodo.getTodoid())
+                    .orElseThrow(() -> new ResourceNotFoundException("Todo List id: " + createdTodo.getTodoid() + " was not found."));
+        }
+
+        User currentUser = userService.findUserById(userid);
+        //createdTodo = new Todolist(currentUser, title);
+
+        createdTodo.setTitle(title);
+        createdTodo.setUser(currentUser);
+
+        return todorepos.save(createdTodo);
     }
 
     @Transactional
@@ -59,5 +71,29 @@ public class TodolistServiceImpl implements TodolistService {
         todorepos.findById(todoid)
                 .orElseThrow(() -> new EntityNotFoundException("Todo List id: " + todoid + " was not found.")); // Change to ResponseNotFoundException later
         todorepos.deleteById(todoid);
+    }
+
+    @Transactional
+    @Override
+    public Todolist saveInitial(Todolist passedTodo) {
+        Todolist newTodo = new Todolist();
+
+        /*
+        if(passedTodo.getTodoid() != 0) {
+            todorepos.findById(passedTodo.getTodoid())
+                    .orElseThrow(() -> new ResourceNotFoundException("Grrrr!"));
+            newTodo.setTodoid(passedTodo.getTodoid());
+        }
+
+        newTodo.setTitle(passedTodo.getTitle());
+        newTodo.setUser(passedTodo.getUser());
+
+        newTodo.getItems().clear();
+        for(Item i : passedTodo.getItems()) {
+            newTodo.getItems().add(new Item(i.getName(), i.getDescription(), i.getDuedate(), i.getFrequency(), newTodo));
+        }
+        */
+
+        return todorepos.save(passedTodo);
     }
 }

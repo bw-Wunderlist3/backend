@@ -14,7 +14,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 
 @RestController
-@RequestMapping("/users")
+//@RequestMapping("/users")
 public class UserController {
     @Autowired
     private UserService userService;
@@ -23,7 +23,7 @@ public class UserController {
     Get a specific user by id
     Route: http://localhost:5280/users/:userid
     */
-    @GetMapping(value = "/{userid}", produces = "application/json")
+    @GetMapping(value = "/users/{userid}", produces = "application/json")
     public ResponseEntity<?> locateUser(@PathVariable long userid) {
         User oneUser = userService.findUserById(userid);
 
@@ -32,9 +32,9 @@ public class UserController {
 
     /*
     Create a new user if all required fields are filled in
-    Route: http://localhost:5280/users
+    Route: http://localhost:5280/users/register
     */
-    @PostMapping(value = "", consumes = "application/json")
+    @PostMapping(value = "/users/register", consumes = "application/json")
     public ResponseEntity<?> createNewUser(@Valid @RequestBody User newuser) throws URISyntaxException {
         newuser.setUserid(0);
         newuser = userService.save(newuser);
@@ -53,7 +53,7 @@ public class UserController {
     Replace an entire user
     Route: http://localhost:5280/users/:userid
     */
-    @PutMapping(value = "/{userid}", consumes = "application/json")
+    @PutMapping(value = "/changeuser/{userid}", consumes = "application/json")
     public ResponseEntity<?> updateFullUser(@Valid @RequestBody User updateuser, @PathVariable long userid) {
         updateuser.setUserid(userid);
         userService.save(updateuser);
@@ -61,11 +61,11 @@ public class UserController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    /*
+    /* Note: formerly @PatchMapping
     Updates a field for a current user
     Route: http://localhost:5280/users/:userid
     */
-    @PatchMapping(value = "/{userid}", consumes = "application/json")
+    @PutMapping(value = "/users/{userid}", consumes = "application/json")
     public ResponseEntity<?> updateUserField(@RequestBody User updateuser, @PathVariable long userid) {
         userService.update(updateuser, userid);
 
@@ -76,7 +76,7 @@ public class UserController {
     Deletes a user along with any associated Lists and their associated Items
     Route: http://localhost:5280/users/:userid
     */
-    @DeleteMapping(value = "/{userid}")
+    @DeleteMapping(value = "/users/{userid}")
     public ResponseEntity<?> deleteUser(@PathVariable long userid) {
         userService.delete(userid);
 

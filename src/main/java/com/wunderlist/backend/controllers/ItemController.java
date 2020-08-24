@@ -15,7 +15,7 @@ import java.net.URISyntaxException;
 import java.util.List;
 
 @RestController
-@RequestMapping("/items")
+//@RequestMapping("/items")
 public class ItemController {
     @Autowired
     private ItemService itemService;
@@ -24,7 +24,7 @@ public class ItemController {
     Get all items
     Route: http://localhost:5280/items
     */
-    @GetMapping(value = "", produces = "application/json")
+    @GetMapping(value = "/items", produces = "application/json")
     public ResponseEntity<?> listAllItems() {
         List<Item> allItems = itemService.findAllItems();
 
@@ -35,7 +35,7 @@ public class ItemController {
     Get specific Item by ID
     Route: http://localhost:5280/items/:itemid
     */
-    @GetMapping(value = "/{itemid}", produces = "application/json")
+    @GetMapping(value = "/items/{itemid}", produces = "application/json")
     public ResponseEntity<?> listanItem(@PathVariable long itemid) {
         Item currentItem = itemService.findItemById(itemid);
 
@@ -46,7 +46,7 @@ public class ItemController {
     Create a new Item
     Route: http://localhost:5280/items/t/:todoid
     */
-    @PostMapping(value = "/t/{todoid}", consumes = "applciation/json")
+    @PostMapping(value = "/items/t/{todoid}", consumes = "applciation/json")
     public ResponseEntity<?> createItem(@PathVariable long todoid, @Valid @RequestBody Item newitem) throws URISyntaxException {
         //Note: the newitem object in the parameter should only have 4 fields: name, description, duedate, frequency
         newitem = itemService.saveItem(todoid, newitem);
@@ -66,9 +66,9 @@ public class ItemController {
     Route: http://localhost:5280/items/:itemid
     */
     // Also needing to change this similar to the way I changed PostMapping above
-    @PutMapping(value = "/{itemid}", consumes = "application/json")
+    @PutMapping(value = "/updateitem/{itemid}", consumes = "application/json")
     public ResponseEntity<?> updateFullItem(@Valid @RequestBody Item updateitem, @PathVariable long itemid) {
-        // Unlike the Post Mapping, this updaeitem object needs 6 fields: name, description, duedate, frequency, status, todolist(obj)
+        // Unlike the Post Mapping, this updateitem object needs 5 fields: name, description, duedate, frequency, -status-, todolist(obj)
         updateitem.setItemid(itemid);
         itemService.changeItem(updateitem);
 
@@ -79,7 +79,7 @@ public class ItemController {
     Updates a field for a current Item
     Route: http://localhost:5280/items/:itemid
     */
-    @PatchMapping(value = "/{itemid}", consumes = "application/json")
+    @PutMapping(value = "/items/{itemid}", consumes = "application/json")
     public ResponseEntity<?> updateItemContent(@RequestBody Item updateitem, @PathVariable long itemid) {
         itemService.updateItem(updateitem, itemid);
 
@@ -90,7 +90,7 @@ public class ItemController {
     Deletes an Item
     Route: http://localhost:5280/items/:itemid
     */
-    @DeleteMapping(value = "/{itemid}")
+    @DeleteMapping(value = "/items/{itemid}")
     public ResponseEntity<?> trashItem(@PathVariable long itemid) {
         itemService.deleteItem(itemid);
 
