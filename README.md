@@ -32,7 +32,7 @@ POST | /items/t/:todoid | Creates a new Item for a specific Todo List | `name, d
 GET | /items | Returns a list of all Items
 GET | /items/:itemid | Returns information for a specific Item based on itemid
 PUT | /changeitem/:itemid | Updates/changes an entire Item | `name, description, date, frequency` -- All Strings. See note above about String date.
-PUT | /items/:itemid | Updates a single field in an existing Item | One of `name, description, duedate` -- All Strings. See note above about String date.
+PUT | /items/:itemid | Updates a single field in an existing Item | One of `name, description, date` -- All Strings. See note above about String date.
 DELETE | items/:itemid | Deletes an Item
 
 ## Status GETs

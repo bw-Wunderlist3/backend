@@ -98,9 +98,11 @@ public class ItemServiceImpl implements ItemService {
         Item currentItem = itemrepos.findById(itemid)
                 .orElseThrow(() -> new EntityNotFoundException("Item id: " + itemid + " was not found.")); // Change to ResponseNotFoundException
 
+        LocalDate newLocalDate = LocalDate.parse(item.getDate());
+
         if(item.getName() != null) currentItem.setName(item.getName());
         if(item.getDescription() != null) currentItem.setDescription(item.getDescription());
-        if(item.getDuedate() != null) currentItem.setDuedate(item.getDuedate());
+        currentItem.setDuedate(newLocalDate);
         if(item.getFrequency() != null) currentItem.setFrequency(item.getFrequency());
         //if(item.getStatus() != 0) currentItem.setStatus(item.getStatus());
         if(item.getTodolist() != null) currentItem.setTodolist(item.getTodolist());
