@@ -11,7 +11,7 @@ public interface ItemService {
 
     Item saveItem(long todoid, Item item);
 
-    Item changeItem(Item item);
+    Item changeItem(long itemid, Item item);
 
     Item updateItem(Item item, long itemid);
 

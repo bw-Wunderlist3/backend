@@ -1,8 +1,11 @@
 package com.wunderlist.backend.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
@@ -20,7 +23,9 @@ public class Item extends Auditable {
     private String description;
 
     @Column(nullable = false)
-    private Date duedate;
+    private LocalDate duedate;
+
+    private String date;
 
     // I'm not sure if I want this to be non-nullable, or simply default to "One-time"
     private String frequency;
@@ -28,9 +33,11 @@ public class Item extends Auditable {
     // Always defaults to whichever integer represents Pending
     // So as I'm building out the repositories and services, I'm noticing the boolean and int below are not needed for this project
     // But if feels like too much work to remove them from this entire project...
+    /*
     @Transient
     public boolean hasvalueforstatus = false;
     private int status;
+    */
 
     @ManyToOne
     @JoinColumn(name = "todoid", nullable = false)
@@ -43,18 +50,18 @@ public class Item extends Auditable {
 
     public Item() {}
 
-    public Item(String name, String description, Date duedate, String frequency) {
+    public Item(String name, String description, String date, String frequency) {
         this.name = name;
         this.description = description;
-        this.duedate = duedate;
+        this.duedate = LocalDate.parse(date);
         this.frequency = frequency;
     }
 
     // Ughhh... removing int status from entire project
-    public Item(String name, String description, Date duedate, String frequency, Todolist todolist) {
+    public Item(String name, String description, String date, String frequency, Todolist todolist) {
         this.name = name;
         this.description = description;
-        this.duedate = duedate;
+        this.duedate = LocalDate.parse(date);
         this.frequency = frequency;
         //this.status = status;
         this.todolist = todolist;
@@ -84,11 +91,11 @@ public class Item extends Auditable {
         this.description = description;
     }
 
-    public Date getDuedate() {
+    public LocalDate getDuedate() {
         return duedate;
     }
 
-    public void setDuedate(Date duedate) {
+    public void setDuedate(LocalDate duedate) {
         this.duedate = duedate;
     }
 
@@ -100,6 +107,7 @@ public class Item extends Auditable {
         this.frequency = frequency;
     }
 
+    /*
     public int getStatus() {
         return status;
     }
@@ -108,6 +116,7 @@ public class Item extends Auditable {
         hasvalueforstatus = true;
         this.status = status;
     }
+    */
 
     public Todolist getTodolist() {
         return todolist;
@@ -123,5 +132,13 @@ public class Item extends Auditable {
 
     public void setStates(Set<Itemstate> states) {
         this.states = states;
+    }
+
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
     }
 }
