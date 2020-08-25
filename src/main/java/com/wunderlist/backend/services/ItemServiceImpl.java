@@ -1,5 +1,6 @@
 package com.wunderlist.backend.services;
 
+import com.wunderlist.backend.exceptions.ResourceNotFoundException;
 import com.wunderlist.backend.models.Item;
 import com.wunderlist.backend.models.Todolist;
 import com.wunderlist.backend.repository.ItemRepository;
@@ -38,9 +39,11 @@ public class ItemServiceImpl implements ItemService {
     @Override
     public Item saveItem(long todoid, Item item) {
         // The item object in the parameter above should be the one containing 4 fields instead of x6x, 5 (removed int status)
-
         Todolist currentTodo = todolistService.findListById(todoid);
-        Item newItem = new Item(item.getName(), item.getDescription(), item.getDuedate(), item.getFrequency(), currentTodo);
+
+        System.out.println("Check getDate (String): " + item.getDate());
+        Item newItem = new Item(item.getName(), item.getDescription(), item.getDate(), item.getFrequency(), currentTodo);
+        System.out.println("Check dueDate (LocalDate): " + item.getDuedate());
 
         /*
         Requested Object shape:
@@ -57,19 +60,35 @@ public class ItemServiceImpl implements ItemService {
 
     @Transactional
     @Override
-    public Item changeItem(Item item) {
+    public Item changeItem(long itemid, Item item) {
         // Note: unlike the saveItem method above, this item object needs x6x, 5 fields instead of 4:
         // name, description, duedate, frequency, -status-, todolist(obj)
-        Item currentItem = new Item();
+        if(itemrepos.findById(itemid).isPresent()) {
+            Item currentItem = findItemById(itemid);
+
+            currentItem.setName(item.getName());
+            currentItem.setDescription(item.getDescription());
+            currentItem.setDuedate(item.getDuedate());
+            currentItem.setFrequency(item.getFrequency());
+            //currentItem.setTodolist(item.getTodolist());
+            //I'm questioning if the above line is needed for PUT methods
+
+            return itemrepos.save(currentItem);
+        } else throw new ResourceNotFoundException("Item with id: " + itemid + " was not found.");
+
+        /*
+        Item currentItem = findItemById(itemid);
 
         currentItem.setName(item.getName());
         currentItem.setDescription(item.getDescription());
         currentItem.setDuedate(item.getDuedate());
         currentItem.setFrequency(item.getFrequency());
         //currentItem.setStatus(item.getStatus());
-        currentItem.setTodolist(todolistService.findListById(item.getTodolist().getTodoid()));
+        //currentItem.setTodolist(todolistService.findListById(item.getTodolist().getTodoid()));
+        currentItem.setTodolist(item.getTodolist());
+        */
 
-        return itemrepos.save(currentItem);
+        //return itemrepos.save(currentItem);
     }
 
     @Transactional
@@ -83,6 +102,7 @@ public class ItemServiceImpl implements ItemService {
         if(item.getDuedate() != null) currentItem.setDuedate(item.getDuedate());
         if(item.getFrequency() != null) currentItem.setFrequency(item.getFrequency());
         //if(item.getStatus() != 0) currentItem.setStatus(item.getStatus());
+        if(item.getTodolist() != null) currentItem.setTodolist(item.getTodolist());
 
         return itemrepos.save(currentItem);
     }

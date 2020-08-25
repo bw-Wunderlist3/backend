@@ -12,12 +12,24 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.List;
 
 @RestController
 //@RequestMapping("/users")
 public class UserController {
     @Autowired
     private UserService userService;
+
+    /*
+    Get a list of all users
+    Route: http://localhost:5280/users
+    */
+    @GetMapping(value = "/users", produces = "application/json")
+    public ResponseEntity<?> locateAllUsers() {
+        List<User> allUsers = userService.findAllUsers();
+
+        return new ResponseEntity<>(allUsers, HttpStatus.OK);
+    }
 
     /*
     Get a specific user by id
@@ -28,6 +40,17 @@ public class UserController {
         User oneUser = userService.findUserById(userid);
 
         return new ResponseEntity<>(oneUser, HttpStatus.OK);
+    }
+
+    /*
+    Get a specific user by id
+    Route: http://localhost:5280/users/:username
+    */
+    @GetMapping(value = "/username/{username}", produces = "application/json")
+    public ResponseEntity<?> fetchUserByName(@PathVariable String username) {
+        User namedUser = userService.findUserByUsername(username);
+
+        return new ResponseEntity<>(namedUser, HttpStatus.OK);
     }
 
     /*
@@ -51,7 +74,7 @@ public class UserController {
 
     /*
     Replace an entire user
-    Route: http://localhost:5280/users/:userid
+    Route: http://localhost:5280/changeuser/:userid
     */
     @PutMapping(value = "/changeuser/{userid}", consumes = "application/json")
     public ResponseEntity<?> updateFullUser(@Valid @RequestBody User updateuser, @PathVariable long userid) {

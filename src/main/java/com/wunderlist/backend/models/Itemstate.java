@@ -1,5 +1,7 @@
 package com.wunderlist.backend.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import javax.persistence.*;
 import java.io.Serializable;
 
@@ -9,11 +11,13 @@ public class Itemstate extends Auditable implements Serializable {
     @Id
     @ManyToOne
     @JoinColumn(name = "itemid")
+    @JsonIgnoreProperties(value = "states", allowSetters = true)
     private Item item;
 
     @Id
     @ManyToOne
     @JoinColumn(name = "statusid")
+    @JsonIgnoreProperties(value = "items", allowSetters = true)
     private State state;
 
     public Itemstate() {}

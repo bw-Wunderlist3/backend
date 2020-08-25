@@ -36,6 +36,7 @@ public class OpenController {
                                            @Valid @RequestBody UserMinimum newminuser) throws URISyntaxException {
         User createdUser = new User();
 
+        createdUser.setUserid(0);
         createdUser.setUsername(newminuser.getUsername());
         createdUser.setPassword(newminuser.getPassword());
         createdUser.setEmail(newminuser.getEmail());

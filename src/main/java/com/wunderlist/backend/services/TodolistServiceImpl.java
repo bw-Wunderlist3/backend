@@ -33,7 +33,7 @@ public class TodolistServiceImpl implements TodolistService {
     @Override
     public Todolist findListById(long todoid) {
         return todorepos.findById(todoid)
-                .orElseThrow(() -> new EntityNotFoundException("Todo List id: " + todoid + " was not found.")); // Change to ResourceNotFoundException
+                .orElseThrow(() -> new ResourceNotFoundException("Todo List id: " + todoid + " was not found."));
     }
 
     @Transactional
@@ -62,14 +62,14 @@ public class TodolistServiceImpl implements TodolistService {
             Todolist currentList = findListById(todoid);
             currentList.setTitle(title);
             return todorepos.save(currentList);
-        } else throw new EntityNotFoundException("Todo List with id: " + todoid + " was not found."); // Change to ResponseNotFoundException later
+        } else throw new ResourceNotFoundException("Todo List with id: " + todoid + " was not found.");
     }
 
     @Transactional
     @Override
     public void deleteList(long todoid) {
         todorepos.findById(todoid)
-                .orElseThrow(() -> new EntityNotFoundException("Todo List id: " + todoid + " was not found.")); // Change to ResponseNotFoundException later
+                .orElseThrow(() -> new ResourceNotFoundException("Todo List id: " + todoid + " was not found."));
         todorepos.deleteById(todoid);
     }
 
@@ -77,22 +77,6 @@ public class TodolistServiceImpl implements TodolistService {
     @Override
     public Todolist saveInitial(Todolist passedTodo) {
         Todolist newTodo = new Todolist();
-
-        /*
-        if(passedTodo.getTodoid() != 0) {
-            todorepos.findById(passedTodo.getTodoid())
-                    .orElseThrow(() -> new ResourceNotFoundException("Grrrr!"));
-            newTodo.setTodoid(passedTodo.getTodoid());
-        }
-
-        newTodo.setTitle(passedTodo.getTitle());
-        newTodo.setUser(passedTodo.getUser());
-
-        newTodo.getItems().clear();
-        for(Item i : passedTodo.getItems()) {
-            newTodo.getItems().add(new Item(i.getName(), i.getDescription(), i.getDuedate(), i.getFrequency(), newTodo));
-        }
-        */
 
         return todorepos.save(passedTodo);
     }
