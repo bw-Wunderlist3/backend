@@ -46,6 +46,16 @@ public class UserServiceImpl implements UserService {
         return ux;
     }
 
+    @Override
+    public List<User> findAll()
+    {
+        List<User> list = new ArrayList<>();
+        userrepos.findAll()
+                .iterator()
+                .forEachRemaining(list::add);
+        return list;
+    }
+
     @Transactional
     @Override
     public User save(User user) {
