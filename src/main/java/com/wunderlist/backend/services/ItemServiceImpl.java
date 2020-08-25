@@ -102,7 +102,7 @@ public class ItemServiceImpl implements ItemService {
 
         if(item.getName() != null) currentItem.setName(item.getName());
         if(item.getDescription() != null) currentItem.setDescription(item.getDescription());
-        currentItem.setDuedate(newLocalDate);
+        if(item.getDate() != null) currentItem.setDuedate(newLocalDate);
         if(item.getFrequency() != null) currentItem.setFrequency(item.getFrequency());
         //if(item.getStatus() != 0) currentItem.setStatus(item.getStatus());
         if(item.getTodolist() != null) currentItem.setTodolist(item.getTodolist());
