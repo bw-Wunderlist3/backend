@@ -1,9 +1,6 @@
 package com.wunderlist.backend;
 
-import com.wunderlist.backend.models.Item;
-import com.wunderlist.backend.models.State;
-import com.wunderlist.backend.models.Todolist;
-import com.wunderlist.backend.models.User;
+import com.wunderlist.backend.models.*;
 import com.wunderlist.backend.repository.ItemRepository;
 import com.wunderlist.backend.repository.TodolistRepository;
 import com.wunderlist.backend.services.ItemService;
@@ -16,6 +13,8 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 @Transactional
 @Component
