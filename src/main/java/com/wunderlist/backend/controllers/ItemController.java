@@ -70,6 +70,8 @@ public class ItemController {
     public ResponseEntity<?> updateFullItem(@Valid @RequestBody Item updateitem, @PathVariable long itemid) {
         // Unlike the Post Mapping, this updateitem object needs 4 fields: name, description, duedate, frequency, -status-
         //updateitem.setItemid(itemid);
+
+        //FIXED THE LAST TROUBLESOME ENDPOINT! MWAHAHAHAHA! I am not crazy - Peter Wood
         itemService.changeItem(itemid, updateitem);
         //itemService.saveItem(updateitem.getTodolist().getTodoid(), updateitem);
 

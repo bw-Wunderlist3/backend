@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityNotFoundException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -40,10 +41,7 @@ public class ItemServiceImpl implements ItemService {
     public Item saveItem(long todoid, Item item) {
         // The item object in the parameter above should be the one containing 4 fields instead of x6x, 5 (removed int status)
         Todolist currentTodo = todolistService.findListById(todoid);
-
-        System.out.println("Check getDate (String): " + item.getDate());
         Item newItem = new Item(item.getName(), item.getDescription(), item.getDate(), item.getFrequency(), currentTodo);
-        System.out.println("Check dueDate (LocalDate): " + item.getDuedate());
 
         /*
         Requested Object shape:
@@ -63,12 +61,15 @@ public class ItemServiceImpl implements ItemService {
     public Item changeItem(long itemid, Item item) {
         // Note: unlike the saveItem method above, this item object needs x6x, 5 fields instead of 4:
         // name, description, duedate, frequency, -status-, todolist(obj)
+
         if(itemrepos.findById(itemid).isPresent()) {
             Item currentItem = findItemById(itemid);
+            //FINALLY FIXED THIS TROUBLESOME DATE CONVERSION FOR THIS PUT METHOD! - Peter Wood
+            LocalDate newDate = LocalDate.parse(item.getDate());
 
             currentItem.setName(item.getName());
             currentItem.setDescription(item.getDescription());
-            currentItem.setDuedate(item.getDuedate());
+            currentItem.setDuedate(newDate);
             currentItem.setFrequency(item.getFrequency());
             //currentItem.setTodolist(item.getTodolist());
             //I'm questioning if the above line is needed for PUT methods
